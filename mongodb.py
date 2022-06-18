@@ -1,3 +1,10 @@
+# mongo DB setup
 import pymongo
-myclient = pymongo.MongoClient("mongodb+srv://admin:MSf587ncpLo41Ocl@cluster0.op8ul.mongodb.net/?retryWrites=true&w=majority")
+import os
+import dotenv
+
+dotenv.load_dotenv()
+MONGODB_URL = os.getenv("MONGODB_URL")
+
+myclient = pymongo.MongoClient(MONGODB_URL)
 db = myclient["news_data_test"]
