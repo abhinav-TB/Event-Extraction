@@ -11,7 +11,7 @@ from mongodb import db
 collection = db["kashmir_news"]
 
 # Threshold for similarity
-THRESHOLD = 0.5
+THRESHOLD = 0.7
 
 def get_similarity(text1, text2):
     """
