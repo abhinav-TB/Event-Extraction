@@ -17,6 +17,7 @@ predictor = Predictor.from_path(model_url)
 for i, document in enumerate(collection.find()):
     print("----processing document {}/{}".format(i + 1, length))
     try:
+        title = document["title"]
         description = document["description"]
         prediction = predictor.predict(document=description)
         new_description = predictor.coref_resolved(description)
@@ -24,7 +25,7 @@ for i, document in enumerate(collection.find()):
         sentences = sent_tokenize(new_description)
 
         for sentence in sentences:
-            csvwriter.writerow([sentence, i])
+            csvwriter.writerow([i, title, sentence])
 
     except Exception as e:
         print("error in writing sentence: {}".format(e))
