@@ -3,9 +3,11 @@ Program to find the similarity between texts and delete the common texts .
 """
 
 # imports
+import sys
+sys.path.append('/workspaces/Event-Extraction')
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from mongodb import db
+from mongodb.config import db
 
 # initialize mongodb
 collection = db["kashmir_news"]

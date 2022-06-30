@@ -3,9 +3,11 @@ program to collect news data from mediastack news api and store in mongodb
 """
 
 ## imports
+import sys
+sys.path.append('/workspaces/Event-Extraction')
 import os
 import requests
-from mongodb import db
+from mongodb.config import db
 from dotenv import load_dotenv
 
 # loads environment variables from .env file
