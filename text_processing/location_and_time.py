@@ -36,12 +36,14 @@ with open("outputs/events.csv", "r") as f:
                     else:
                         date = word
                     last_word_was_date = True
+                    print(f"Date found in event {i}: {date}")
                 elif tag.split("-")[1] == "GPE":
                     if last_word_was_location:
                         location += f" {word}"
                     else:
                         location = word
                     last_word_was_location = True
+                    print(f"Location found in event {i}: {location}")
                 else:
                     last_word_was_date = False
                     last_word_was_location = False
