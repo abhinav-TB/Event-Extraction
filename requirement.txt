@@ -14,3 +14,4 @@ sklearn==0.0
 smart-open==6.0.0
 threadpoolctl==3.1.0
 urllib3==1.26.9
+stanza==1.4.0
