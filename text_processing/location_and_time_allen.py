@@ -3,7 +3,7 @@ from allennlp_models import pretrained
 
 ner_predictor = pretrained.load_predictor("tagging-fine-grained-transformer-crf-tagger")
 
-csvfile = open("outputs/tagged_events_raw.csv", "w")
+csvfile = open("outputs/tagged_events_raw_allen.csv", "w")
 csvwriter = DictWriter(
     csvfile,
     fieldnames=[
