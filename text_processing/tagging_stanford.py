@@ -1,6 +1,6 @@
 from stanza.server import CoreNLPClient
 
-text = "Two people were killed in a car crash in Kashmir."
+text = "A lot happened yesterday, and here's more from the district of Ernakulam in Kerala on January 20. Congress president Sonia Gandhi said Congress will launch a 'Bharat Jodo Yatra' from Kanyakumari to Kashmir on October 2."
 with CoreNLPClient(
     annotators=[
         "tokenize",
@@ -20,5 +20,7 @@ with CoreNLPClient(
     # get the first sentence
     sentence = ann.sentence[0]
 
+    # print(sentence)
+
     for token in sentence.token:
-        print(token.word, token.lemma, token.pos, token.ner)
+        print(token)
