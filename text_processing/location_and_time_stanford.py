@@ -1,6 +1,5 @@
 from csv import DictReader, DictWriter
 from stanza.server import CoreNLPClient
-from datatypes_timex_expression import Timex
 
 csvfile = open("outputs/tagged_events_raw_stanford.csv", "w")
 csvwriter = DictWriter(
@@ -77,10 +76,6 @@ with CoreNLPClient(
                 else:
                     prev_token_date = False
                     prev_token_location = False
-
-            if date_value:
-                parsed_date_value = Timex(timex=date_value).to_string()
-                print(f"Timex: {date_value}, Parsed: {parsed_date_value}")
 
             csvwriter.writerow(
                 {
