@@ -63,19 +63,19 @@ with open("outputs/tagged_events_raw_stanford.csv", "r") as f:
         date_prediction = resolved_datetime.date() if resolved_datetime else None
 
         if id not in article_id_to_tags and (
-            location_prediction != "[]" or date_prediction is not None
+            location_prediction != "" or date_prediction is not None
         ):
             article_id_to_tags[id] = {
-                "location": location_prediction if location_prediction != "[]" else "",
+                "location": location_prediction,
                 "date": str(date_prediction) if date_prediction else "",
             }
         else:
-            if location_prediction != "[]":
+            if location_prediction != "":
                 article_id_to_tags[id]["location"] = location_prediction
             if date_prediction is not None:
                 article_id_to_tags[id]["date"] = str(date_prediction)
 
-        if location_prediction == "[]" and id in article_id_to_tags:
+        if location_prediction == "" and id in article_id_to_tags:
             location_prediction = article_id_to_tags[id]["location"]
 
         if date_prediction is None and id in article_id_to_tags:

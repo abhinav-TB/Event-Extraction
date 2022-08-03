@@ -56,7 +56,7 @@ with open("outputs/events.csv", "r") as f:
                 "article_title": row["article_title"],
                 "article_date": row["article_date"],
                 "event": row["event"],
-                "location_prediction": location,
+                "location_prediction": location if len(location) > 0 else None,
                 "date_prediction": date,
             }
         )
