@@ -29,8 +29,8 @@ with CoreNLPClient(
         "coref",
     ],
     timeout=3000000,
-    memory="6G",
-    be_quiet=True,
+    memory="4G",
+    be_quiet=False,
 ) as client:
     with open("outputs/events.csv", "r") as f:
         reader = DictReader(f)
