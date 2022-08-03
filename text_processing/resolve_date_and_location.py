@@ -53,6 +53,9 @@ with open("outputs/tagged_events_raw_stanford.csv", "r") as f:
 
     for i, row in enumerate(reader):
         id = row["article_id"]
+        article_date = datetime.strptime(
+            row["article_date"].split("T")[0], "%Y-%m-%d"
+        ).date()
         event = row["event"]
         location_prediction = row["location_prediction"]
         resolved_datetime = resolve_datetime(
@@ -62,12 +65,10 @@ with open("outputs/tagged_events_raw_stanford.csv", "r") as f:
         )
         date_prediction = resolved_datetime.date() if resolved_datetime else None
 
-        if id not in article_id_to_tags and (
-            location_prediction != "" or date_prediction is not None
-        ):
+        if id not in article_id_to_tags:
             article_id_to_tags[id] = {
                 "location": location_prediction,
-                "date": str(date_prediction) if date_prediction else "",
+                "date": str(date_prediction) if date_prediction else str(article_date),
             }
         else:
             if location_prediction != "":
