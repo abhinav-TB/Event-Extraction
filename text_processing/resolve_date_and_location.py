@@ -1,18 +1,13 @@
 from csv import DictReader, DictWriter
 from stanza.server import CoreNLPClient
-from datatypes_timex_expression import Timex
 
-csvfile = open("outputs/tagged_events_raw_stanford.csv", "w")
+csvfile = open("outputs/tagged_events_resolved.csv", "w")
 csvwriter = DictWriter(
     csvfile,
     fieldnames=[
-        "article_id",
-        "article_title",
-        "article_date",
         "event",
         "location_prediction",
-        "date_prediction_text",
-        "date_prediction_value",
+        "date_prediction",
     ],
 )
 csvwriter.writeheader()
@@ -30,12 +25,11 @@ with CoreNLPClient(
     ],
     timeout=3000000,
     memory="6G",
-    be_quiet=True,
+    be_quiet=True
 ) as client:
-    with open("outputs/events.csv", "r") as f:
+    with open("outputs/tagged_events_raw_stanford.csv", "r") as f:
         reader = DictReader(f)
         prev_token_date = False
-        prev_token_location = False
 
         for i, row in enumerate(reader):
             event = row["event"]
@@ -65,22 +59,12 @@ with CoreNLPClient(
                         )
 
                     elif token.ner == "LOCATION":
-                        if prev_token_location:
-                            location[-1] += " " + token.value
-                        else:
-                            prev_token_location = True
-                            location.append(token.value)
+                        location.append(token.value)
                         print(f"Location found in event {i}: {token.value}")
                     else:
                         prev_token_date = False
-                        prev_token_location = False
                 else:
                     prev_token_date = False
-                    prev_token_location = False
-
-            if date_value:
-                parsed_date_value = Timex(timex=date_value).to_string()
-                print(f"Timex: {date_value}, Parsed: {parsed_date_value}")
 
             csvwriter.writerow(
                 {
