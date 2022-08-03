@@ -13,7 +13,7 @@ with CoreNLPClient(
         "coref",
     ],
     timeout=30000,
-    memory="6G",
+    memory="4G",
 ) as client:
     ann = client.annotate(text)
 
