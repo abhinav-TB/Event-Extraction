@@ -6,9 +6,9 @@ from mongodb.config import db
 from nltk.tokenize import sent_tokenize
 from csv import DictWriter
 
-collection = db["kashmir_news"]
+collection = db["news"]
 
-csvfile = open("outputs/events.csv", "w")
+csvfile = open("../outputs/events.csv", "w")
 csvwriter = DictWriter(
     csvfile, fieldnames=["article_id", "article_title", "article_date", "event"]
 )
@@ -21,13 +21,11 @@ for i, document in enumerate(collection.find()):
     print("----processing document {}/{}".format(i + 1, length))
     try:
         title = document["title"]
-        description = document["description"]
-        article_date = document["published_at"]
-        prediction = predictor.predict(document=description)
+        description = document["content"]
+        article_date = document["publishAt"]["$date"]
         new_description = predictor.coref_resolved(description)
-
         sentences = sent_tokenize(new_description)
-
+      
         for sentence in sentences:
             csvwriter.writerow(
                 {
