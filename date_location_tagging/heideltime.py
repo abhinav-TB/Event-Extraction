@@ -8,14 +8,15 @@ csvwriter.writeheader()
 # read from a csvfile
 with open('../outputs/events.csv', 'r') as f:
     reader = DictReader(f)
-    for row in reader:
+    for i,row in enumerate(reader):
+        print("----processing document {}".format(i + 1))
         results =  py_heideltime(row['event'], language='english', date_granularity="day", document_type='news', document_creation_time= row['article_date'][:10])
         csvwriter.writerow(
             {
                 "article_id": row["article_id"],
                 "article_title": row["article_title"],
                 "event": row["event"],
-                "date_prediction": results,
+                "date_prediction": results[0],
             }
-
+            
         )
