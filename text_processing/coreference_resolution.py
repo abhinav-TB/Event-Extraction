@@ -2,11 +2,13 @@ import sys
 
 sys.path.append("/workspaces/Event-Extraction")
 from allennlp.predictors.predictor import Predictor
+from allennlp_models.coref.predictors.coref import CorefPredictor
 from mongodb.config import db
 from nltk.tokenize import sent_tokenize
 from csv import DictWriter
 
 collection = db["news"]
+max_description_length = 280
 
 csvfile = open("../outputs/events.csv", "w")
 csvwriter = DictWriter(
@@ -23,9 +25,12 @@ for i, document in enumerate(collection.find()):
         title = document["title"]
         description = document["content"]
         article_date = document["publishAt"]["$date"]
+        if len(description) > max_description_length:
+            continue
+
         new_description = predictor.coref_resolved(description)
         sentences = sent_tokenize(new_description)
-      
+
         for sentence in sentences:
             csvwriter.writerow(
                 {
