@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("/workspaces/Event-Extraction")
+sys.path.append("../")
 from allennlp.predictors.predictor import Predictor
 from allennlp_models.coref.predictors.coref import CorefPredictor
 from mongodb.config import db
@@ -8,7 +8,7 @@ from nltk.tokenize import sent_tokenize
 from csv import DictWriter
 
 collection = db["news"]
-max_description_length = 280
+max_description_length = 10000
 
 csvfile = open("../outputs/events.csv", "w")
 csvwriter = DictWriter(
