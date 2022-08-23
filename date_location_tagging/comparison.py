@@ -5,6 +5,7 @@ csvwriter = DictWriter(
     csvfile,
     fieldnames=[
         "article_id",
+        "article_date",
         "event",
         "stanford_location",
         "allen_location",
@@ -51,6 +52,7 @@ with open(ht_path, "r") as ht_f, open(al_path, "r") as al_f, open(
             csvwriter.writerow(
                 {
                     "article_id": ht_row["article_id"],
+                    "article_date": st_row["article_date"],
                     "event": ht_row["event"],
                     "stanford_location": st_row["location_prediction"],
                     "allen_location": al_row["location_prediction"],
