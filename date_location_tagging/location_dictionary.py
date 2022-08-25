@@ -1,5 +1,6 @@
 from csv import DictReader
 
+
 class FullLocation:
     def __init__(self):
         self.village_dict = dict()
@@ -32,4 +33,3 @@ class FullLocation:
         if district_loc:
             return district_loc
         return location
-
