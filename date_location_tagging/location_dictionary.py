@@ -1,6 +1,6 @@
 from csv import DictReader
 
-class Village:
+class FullLocation:
     def __init__(self):
         self.village_dict = dict()
         self.district_dict = dict()
@@ -10,7 +10,7 @@ class Village:
         with open("outputs/village_directory.csv", "r") as f:
             reader = DictReader(f)
 
-            for i, row in enumerate(reader):
+            for row in reader:
                 village = row["village"]
                 district = row["district"]
                 state = row["state"]
@@ -23,4 +23,13 @@ class Village:
 
     def get_location_district(self, district):
         return self.district_dict.get(district)
+
+    def get_location(self, location):
+        village_loc = self.get_location_village(location)
+        if village_loc:
+            return village_loc
+        district_loc = self.get_location_district(location)
+        if district_loc:
+            return district_loc
+        return location
 
