@@ -23,7 +23,6 @@ with open("outputs/tagged_events_resolved.csv", "r") as f:
         id = row["article_id"]
         loc = row["location_prediction"]
         loc = loc[1:-1]
-        print(f"after: {loc}")
         loc_items = loc.split(", ")
         loc_items = [i[1:-1] for i in loc_items]
         loc_items_full = [full_loc_helper.get_location(i) for i in loc_items]
