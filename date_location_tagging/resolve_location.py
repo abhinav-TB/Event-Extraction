@@ -17,7 +17,7 @@ csvwriter.writeheader()
 
 with open("outputs/tagged_events_resolved.csv", "r") as f:
     reader = DictReader(f)
-    fu
+    full_loc_helper = FullLocation()
 
     for i, row in enumerate(reader):
         id = row["article_id"]
@@ -26,14 +26,13 @@ with open("outputs/tagged_events_resolved.csv", "r") as f:
         print(f"after: {loc}")
         loc_items = loc.split(", ")
         loc_items = [i[1:-1] for i in loc_items]
-        loc_items_full = []
-        
+        loc_items_full = [full_loc_helper.get_location(i) for i in loc_items]
 
-        # csvwriter.writerow(
-        #     {
-        #         "article_id": row["article_id"],
-        #         "event": event,
-        #         "location_prediction": location_prediction,
-        #         "date_prediction": date_prediction,
-        #     }
-        # )
+        csvwriter.writerow(
+            {
+                "article_id": row["article_id"],
+                "event": row["event"],
+                "location_prediction": loc_items_full,
+                "date_prediction": row["date_prediction"],
+            }
+        )
