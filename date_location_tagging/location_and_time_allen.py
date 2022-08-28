@@ -19,15 +19,17 @@ csvwriter.writeheader()
 
 with open("outputs/events.csv", "r") as f:
     reader = DictReader(f)
-    last_word_was_date = False
-    last_word_was_location = False
     for i, row in enumerate(reader):
         event = row["event"]
         prediction = ner_predictor.predict(sentence=event)
         words = prediction["words"]
         tags = prediction["tags"]
         date = ""
-        location = ""
+        location = []
+
+        last_word_was_date = False
+        last_word_was_location = False
+
         for word, tag in zip(words, tags):
             if tag != "O":
                 if tag.split("-")[1] == "DATE":
@@ -39,11 +41,11 @@ with open("outputs/events.csv", "r") as f:
                     print(f"Date found in event {i}: {date}")
                 elif tag.split("-")[1] == "GPE":
                     if last_word_was_location:
-                        location += f" {word}"
+                        location[-1] += " " + word
                     else:
-                        location = word
+                        location.append(word)
                     last_word_was_location = True
-                    print(f"Location found in event {i}: {location}")
+                    print(f"Locations found in event {i}: {location}")
                 else:
                     last_word_was_date = False
                     last_word_was_location = False
@@ -56,7 +58,9 @@ with open("outputs/events.csv", "r") as f:
                 "article_title": row["article_title"],
                 "article_date": row["article_date"],
                 "event": row["event"],
-                "location_prediction": location if len(location) > 0 else None,
+                "location_prediction": list(set(location))
+                if len(location) > 0
+                else None,
                 "date_prediction": date,
             }
         )
