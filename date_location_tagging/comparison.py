@@ -11,8 +11,8 @@ csvwriter = DictWriter(
         "allen_location",
         "stanford_date",
         "heidal_date",
-        "actual_location",
-        "actual_date",
+        "best_location",
+        "best_date",
     ],
 )
 csvwriter.writeheader()
@@ -56,10 +56,12 @@ with open(ht_path, "r") as ht_f, open(al_path, "r") as al_f, open(
                     "event": ht_row["event"],
                     "stanford_location": st_row["location_prediction"],
                     "allen_location": al_row["location_prediction"],
-                    "stanford_date": st_r_row["date_prediction"],
+                    "stanford_date": st_r_row["date_prediction"]
+                    if st_row["date_prediction_text"] != ""
+                    else "",
                     "heidal_date": ht_row["date_prediction"],
-                    "actual_location": "",
-                    "actual_date": "",
+                    "best_location": "",
+                    "best_date": "",
                 }
             )
     print(f"{ht_dates_predicted} predicted dates by Heidal Time")
