@@ -35,6 +35,7 @@ with open(comparison_file_path, "r") as f, NamedTemporaryFile(
                         dedent(
                             f"""
                     Event: {row["event"]}
+                    Article Date: {row["article_date"]}
 
                     Stanford location: {row["stanford_location"]}
                     Allen location: {row["allen_location"]}
