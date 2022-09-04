@@ -33,8 +33,6 @@ with CoreNLPClient(
 ) as client:
     with open("outputs/events.csv", "r") as f:
         reader = DictReader(f)
-        prev_token_date = False
-        prev_token_location = False
 
         for i, row in enumerate(reader):
             event = row["event"]
@@ -47,6 +45,9 @@ with CoreNLPClient(
             location = []
             date_text = ""
             date_value = ""
+
+            prev_token_date = False
+            prev_token_location = False
 
             for token in ann_sentence.sentence[0].token:
                 if token.ner != "O":
@@ -67,8 +68,8 @@ with CoreNLPClient(
                         if prev_token_location:
                             location[-1] += " " + token.value
                         else:
-                            prev_token_location = True
                             location.append(token.value)
+                        prev_token_location = True
                         print(f"Location found in event {i}: {token.value}")
                     else:
                         prev_token_date = False
@@ -83,7 +84,9 @@ with CoreNLPClient(
                     "article_title": row["article_title"],
                     "article_date": row["article_date"],
                     "event": row["event"],
-                    "location_prediction": location if len(location) > 0 else None,
+                    "location_prediction": list(set(location))
+                    if len(location) > 0
+                    else None,
                     "date_prediction_text": date_text,
                     "date_prediction_value": date_value,
                 }
