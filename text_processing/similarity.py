@@ -5,13 +5,13 @@ Program to find the similarity between texts and delete the common texts .
 # imports
 import sys
 
-sys.path.append("/workspaces/Event-Extraction")
+sys.path.append("../")
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from mongodb.config import db
 
 # initialize mongodb
-collection = db["kashmir_news"]
+collection = db["category_news"]
 
 # Threshold for similarity
 THRESHOLD = 0.7
@@ -44,6 +44,8 @@ if __name__ == "__main__":
 
     # find similarity between all pairs of texts and delete the common texts
     for i in range(len(data)):
+        print("----processing document {}/{}".format(i + 1, len(data)))
+        
         for j in range(i + 1, len(data)):
 
             # finds similarity between two texts
