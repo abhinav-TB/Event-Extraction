@@ -7,7 +7,7 @@ from mongodb.config import db
 from nltk.tokenize import sent_tokenize
 from csv import DictWriter
 
-collection = db["news"]
+collection = db["category_news"]
 
 csvfile = open("../outputs/events.csv", "w")
 csvwriter = DictWriter(
