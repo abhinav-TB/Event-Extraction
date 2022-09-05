@@ -3,7 +3,7 @@ from csv import DictWriter, DictReader
 
 csvfile = open("../outputs/heidal_Time.csv", "w")
 csvwriter = DictWriter(
-    csvfile, fieldnames=["article_id", "article_title", "date_prediction", "event"]
+    csvfile, fieldnames=["news_id","article_id", "article_title", "date_prediction", "event","event_type"]
 )
 csvwriter.writeheader()
 # read from a csvfile
@@ -20,9 +20,11 @@ with open("../outputs/events.csv", "r") as f:
         )
         csvwriter.writerow(
             {
+                "news_id": i,
                 "article_id": row["article_id"],
                 "article_title": row["article_title"],
                 "event": row["event"],
                 "date_prediction": results[0],
+                "event_type": row["event_type"],
             }
         )
