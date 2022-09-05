@@ -26,6 +26,7 @@ for i, document in enumerate(collection.find()):
     words = nltk.word_tokenize(description)
     for word in words:
         if word in key_words:
+            document['category'] = word
             new_collection.insert_one(document)
             break   
            

@@ -1,4 +1,5 @@
 import sys
+from unicodedata import category
 
 sys.path.append("../")
 from allennlp.predictors.predictor import Predictor
@@ -24,7 +25,7 @@ for i, document in enumerate(collection.find()):
         title = document["title"]
         description = document["content"]
         article_date = document["publishAt"]["$date"]
-
+        category = document["category"]
         new_description = predictor.coref_resolved(description)
         sentences = sent_tokenize(new_description)
 
@@ -35,6 +36,7 @@ for i, document in enumerate(collection.find()):
                     "article_title": title,
                     "article_date": article_date,
                     "event": sentence,
+                    "event_type": category,
                 }
             )
 
