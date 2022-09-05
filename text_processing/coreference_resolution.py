@@ -12,7 +12,7 @@ collection = db["category_news"]
 
 csvfile = open("../outputs/events.csv", "w")
 csvwriter = DictWriter(
-    csvfile, fieldnames=["article_id", "article_title", "article_date", "event"]
+    csvfile, fieldnames=["article_id", "article_title", "article_date", "event","event_type"]
 )
 csvwriter.writeheader()
 length = collection.count_documents({})
