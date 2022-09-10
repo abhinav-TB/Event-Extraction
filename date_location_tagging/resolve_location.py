@@ -10,6 +10,7 @@ csvwriter = DictWriter(
         "event",
         "location_prediction",
         "date_prediction",
+        "event_type",
     ],
 )
 csvwriter.writeheader()
@@ -33,5 +34,6 @@ with open("outputs/tagged_events_resolved.csv", "r") as f:
                 "event": row["event"],
                 "location_prediction": loc_items_full,
                 "date_prediction": row["date_prediction"],
+                "event_type": row["event_type"],
             }
         )

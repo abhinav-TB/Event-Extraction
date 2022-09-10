@@ -12,6 +12,7 @@ csvwriter = DictWriter(
         "event",
         "location_prediction",
         "date_prediction",
+        "event_type",
     ],
 )
 csvwriter.writeheader()
@@ -88,5 +89,6 @@ with open("outputs/tagged_events_raw_stanford.csv", "r") as f:
                 "event": event,
                 "location_prediction": location_prediction,
                 "date_prediction": date_prediction,
+                "event_type": row["event_type"],
             }
         )
