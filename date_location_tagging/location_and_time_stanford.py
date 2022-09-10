@@ -1,6 +1,8 @@
 from csv import DictReader, DictWriter
 from stanza.server import CoreNLPClient
 
+MAX_LENGTH = 1000
+
 csvfile = open("outputs/tagged_events_raw_stanford.csv", "w")
 csvwriter = DictWriter(
     csvfile,
@@ -9,6 +11,7 @@ csvwriter = DictWriter(
         "article_title",
         "article_date",
         "event",
+        "event_type",
         "location_prediction",
         "date_prediction_text",
         "date_prediction_value",
@@ -36,6 +39,9 @@ with CoreNLPClient(
 
         for i, row in enumerate(reader):
             event = row["event"]
+
+            if len(event) > MAX_LENGTH:
+                continue
 
             try:
                 ann_sentence = client.annotate(event)
@@ -84,6 +90,7 @@ with CoreNLPClient(
                     "article_title": row["article_title"],
                     "article_date": row["article_date"],
                     "event": row["event"],
+                    "event_type": row["event_type"],
                     "location_prediction": list(set(location))
                     if len(location) > 0
                     else None,
