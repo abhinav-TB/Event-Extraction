@@ -7,12 +7,14 @@ csvfile = open("outputs/tagged_events_raw_allen.csv", "w")
 csvwriter = DictWriter(
     csvfile,
     fieldnames=[
-        "article_id",
+        "news_id",
         "article_title",
         "article_date",
         "event",
         "location_prediction",
         "date_prediction",
+        "event_type",
+        "url",
     ],
 )
 csvwriter.writeheader()
@@ -54,7 +56,7 @@ with open("outputs/events.csv", "r") as f:
                 last_word_was_location = False
         csvwriter.writerow(
             {
-                "article_id": row["article_id"],
+                "news_id": row["news_id"],
                 "article_title": row["article_title"],
                 "article_date": row["article_date"],
                 "event": row["event"],
@@ -62,5 +64,7 @@ with open("outputs/events.csv", "r") as f:
                 if len(location) > 0
                 else None,
                 "date_prediction": date,
+                "event_type": row["event_type"],
+                "url": row["url"],
             }
         )
