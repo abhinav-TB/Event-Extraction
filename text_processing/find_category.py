@@ -4,7 +4,7 @@ import sys
 sys.path.append("../")
 from nltk.corpus import wordnet
 from mongodb.config import db
-
+nltk.download('omw-1.4')
 collection = db["news"]
 
 new_collection = db["category_news"]
@@ -18,15 +18,13 @@ for word in parent_words:
             if l.name() not in key_words:
                key_words[l.name()] = word
 
-print(key_words)
-
 ## discard news without the keywords
 for i, document in enumerate(collection.find()):
     description = document["content"]
     words = nltk.word_tokenize(description)
     for word in words:
         if word in key_words:
-            document['category'] = word
+            document['category'] = key_words[word]
             new_collection.insert_one(document)
             break   
            
