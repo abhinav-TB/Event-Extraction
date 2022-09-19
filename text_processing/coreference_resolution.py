@@ -12,7 +12,7 @@ collection = db["category_news"]
 
 csvfile = open("../outputs/events.csv", "w")
 csvwriter = DictWriter(
-    csvfile, fieldnames=["article_id", "article_title", "article_date", "event","event_type"]
+    csvfile, fieldnames=["news_id", "article_title", "article_date", "event","event_type","url"]
 )
 csvwriter.writeheader()
 length = collection.count_documents({})
@@ -26,20 +26,24 @@ for i, document in enumerate(collection.find()):
         description = document["content"]
         article_date = document["publishAt"]["$date"]
         category = document["category"]
+        url = document["url"]
+        news_id = document["_id"]
         new_description = predictor.coref_resolved(description)
         sentences = sent_tokenize(new_description)
 
         for sentence in sentences:
             csvwriter.writerow(
                 {
-                    "article_id": i,
+                    "news_id": news_id,
                     "article_title": title,
-                    "article_date": article_date,
                     "event": sentence,
+                    "article_date": article_date,
+                    "url": url,
                     "event_type": category,
                 }
             )
-
+            break
     except Exception as e:
         print("error in writing sentence: {}".format(e))
+             
 csvfile.close()

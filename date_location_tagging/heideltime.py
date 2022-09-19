@@ -20,11 +20,12 @@ with open("../outputs/events.csv", "r") as f:
         )
         csvwriter.writerow(
             {
-                "news_id": i,
-                "article_id": row["article_id"],
+                "news_id": row["_id"],
                 "article_title": row["article_title"],
                 "event": row["event"],
                 "date_prediction": results[0],
                 "event_type": row["event_type"],
+                "url": row["url"]
             }
         )
+        break
