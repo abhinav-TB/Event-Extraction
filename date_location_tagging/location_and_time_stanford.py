@@ -1,7 +1,7 @@
 from os import system
 from stanza.server import CoreNLPClient
 
-from utils import write_to_csv_with_memory
+from utils import write_to_csv_with_progress
 
 MAX_LENGTH = 1000
 
@@ -68,7 +68,7 @@ with CoreNLPClient(
         system("clear")
         print(f"Updated {output_file_path}")
 
-    write_to_csv_with_memory(
+    write_to_csv_with_progress(
         input_file_path=input_file_path,
         output_file_path=output_file_path,
         fieldnames=[

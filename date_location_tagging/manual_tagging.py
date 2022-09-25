@@ -1,7 +1,7 @@
 from os import system
 from textwrap import dedent
 
-from utils import write_to_csv_with_memory
+from utils import write_to_csv_with_progress
 
 comparison_file_path = "outputs/comparison.csv"
 
@@ -84,7 +84,7 @@ def after_effect():
     )
 
 
-write_to_csv_with_memory(
+write_to_csv_with_progress(
     input_file_path=None,
     output_file_path="outputs/comparison.csv",
     fieldnames=None,

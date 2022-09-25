@@ -5,7 +5,7 @@ from tempfile import NamedTemporaryFile
 from typing import Callable, Any
 
 
-def write_to_csv_with_memory(
+def write_to_csv_with_progress(
     input_file_path: str | None,
     output_file_path: str,
     fieldnames: list[str] | None,
@@ -15,7 +15,7 @@ def write_to_csv_with_memory(
     after_effect: Callable[[], None] | None = None,
 ) -> None:
     """
-    Write to a CSV file, while keeping a memory of the previous state of the file.
+    Write to a CSV file, while saving the progress.
     If the CSV file doesn't exist, it will be created with the same data as the input file but with missing fields set to the string TO_BE_FILLED.
     If input_file_path and fieldnames are None, it's assumed that the CSV file already exists.
 
