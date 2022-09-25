@@ -1,103 +1,90 @@
-from csv import DictReader, DictWriter
+from os import system
 from stanza.server import CoreNLPClient
 
-MAX_LENGTH = 1000
+from write_to_csv_with_memory import write_to_csv_with_memory
 
-csvfile = open("outputs/tagged_events_raw_stanford.csv", "w")
-csvwriter = DictWriter(
-    csvfile,
-    fieldnames=[
-        "article_id",
-        "article_title",
-        "article_date",
-        "event",
-        "event_type",
-        "location_prediction",
-        "date_prediction_text",
-        "date_prediction_value",
-    ],
-)
-csvwriter.writeheader()
+MAX_LENGTH = 10000
 
-with CoreNLPClient(
-    annotators=[
-        "tokenize",
-        "ssplit",
-        "pos",
-        "lemma",
-        "ner",
-        "parse",
-        "depparse",
-        "coref",
-    ],
-    timeout=3000000,
-    memory="4G",
-    be_quiet=False,
-) as client:
-    with open("outputs/events.csv", "r") as f:
-        reader = DictReader(f)
+input_file_path = "outputs/events.csv"
+output_file_path = "outputs/tagged_events_raw_stanford.csv"
 
-        for i, row in enumerate(reader):
+# Only doing location tagging with Stanford because HeidalTime is better at date tagging
+while True:
+    with CoreNLPClient(
+        annotators=[
+            "tokenize",
+            "ssplit",
+            "pos",
+            "lemma",
+            "ner",
+            "parse",
+            "depparse",
+            "coref",
+        ],
+        timeout=300000,
+        memory="4G",
+        be_quiet=True,
+    ) as client:
+        system("clear")
+
+        rows_left = False
+
+        def process_row(i, row):
+            if row["location_prediction"] != "":
+                return row
+            else:
+                global rows_left
+                rows_left = True
+
             event = row["event"]
 
             if len(event) > MAX_LENGTH:
-                continue
+                return row
 
             try:
                 ann_sentence = client.annotate(event)
             except Exception as e:
                 print(e)
-                continue
-            location = []
-            date_text = ""
-            date_value = ""
+                return row
 
-            prev_token_date = False
+            location = []
             prev_token_location = False
 
             for token in ann_sentence.sentence[0].token:
                 if token.ner != "O":
-                    if token.ner == "DATE":
-                        if prev_token_date:
-                            continue
-                        else:
-                            prev_token_date = True
-                        print(f"Date found in event {i}: {token.timexValue.text}")
-                        date_text = token.timexValue.text
-                        date_value = (
-                            token.timexValue.altValue
-                            if token.timexValue.altValue
-                            else token.timexValue.value
-                        )
-
-                    elif token.ner == "LOCATION":
+                    if token.ner == "LOCATION":
                         if prev_token_location:
                             location[-1] += " " + token.value
                         else:
                             location.append(token.value)
                         prev_token_location = True
-                        print(f"Location found in event {i}: {token.value}")
+                        print(f"Locations found in event {i}: {location}")
                     else:
-                        prev_token_date = False
                         prev_token_location = False
                 else:
-                    prev_token_date = False
                     prev_token_location = False
 
-            csvwriter.writerow(
-                {
-                    "article_id": row["article_id"],
-                    "article_title": row["article_title"],
-                    "article_date": row["article_date"],
-                    "event": row["event"],
-                    "event_type": row["event_type"],
-                    "location_prediction": list(set(location))
-                    if len(location) > 0
-                    else None,
-                    "date_prediction_text": date_text,
-                    "date_prediction_value": date_value,
-                }
+            row["location_prediction"] = (
+                list(set(location)) if len(location) > 0 else None
             )
 
-            if not client.is_alive():
-                client.start()
+            return row
+
+        write_to_csv_with_memory(
+            input_file_path=input_file_path,
+            output_file_path=output_file_path,
+            fieldnames=[
+                "news_id",
+                "article_title",
+                "article_date",
+                "event",
+                "event_type",
+                "url",
+                "location_prediction",
+            ],
+            process_row=process_row,
+            after_effect=None,
+        )
+
+        if not rows_left:
+            break
