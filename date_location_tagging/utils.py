@@ -16,13 +16,13 @@ def write_to_csv_with_memory(
 ) -> None:
     """
     Write to a CSV file, while keeping a memory of the previous state of the file.
-    If the CSV file doesn't exist, it will be created with the same data as the input file but with missing fields set to the value TO_BE_FILLED.
+    If the CSV file doesn't exist, it will be created with the same data as the input file but with missing fields set to the string TO_BE_FILLED.
     If input_file_path and fieldnames are None, it's assumed that the CSV file already exists.
 
     :param input_file_path: Path to the input CSV file
     :param output_file_path: The path to the CSV file to write to.
     :param fieldnames: The fieldnames of the output CSV file.
-    :param process_row: A function that takes a row_index and row as input and returns a row as output.
+    :param process_row: A function that takes a row_index and row as input and returns a row as output. Return None to skip the row.
     :param after_effect: A function that is called after the CSV file has been written to.
     :return: None
     """
