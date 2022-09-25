@@ -3,7 +3,7 @@ from stanza.server import CoreNLPClient
 
 from utils import write_to_csv_with_memory
 
-MAX_LENGTH = 10000
+MAX_LENGTH = 1000
 
 input_file_path = "outputs/events.csv"
 output_file_path = "outputs/tagged_events_raw_stanford.csv"
