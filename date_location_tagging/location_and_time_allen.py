@@ -8,40 +8,30 @@ csvwriter = DictWriter(
     csvfile,
     fieldnames=[
         "news_id",
-        "article_title",
-        "article_date",
+        "news_title",
         "event",
-        "location_prediction",
-        "date_prediction",
         "event_type",
         "url",
+        "date_prediction",
+        "location_prediction",
     ],
 )
 csvwriter.writeheader()
 
-with open("outputs/events.csv", "r") as f:
+with open("outputs/heidal_Time.csv", "r") as f:
     reader = DictReader(f)
     for i, row in enumerate(reader):
         event = row["event"]
         prediction = ner_predictor.predict(sentence=event)
         words = prediction["words"]
         tags = prediction["tags"]
-        date = ""
         location = []
 
-        last_word_was_date = False
         last_word_was_location = False
 
         for word, tag in zip(words, tags):
             if tag != "O":
-                if tag.split("-")[1] == "DATE":
-                    if last_word_was_date:
-                        date += f" {word}"
-                    else:
-                        date = word
-                    last_word_was_date = True
-                    print(f"Date found in event {i}: {date}")
-                elif tag.split("-")[1] == "GPE":
+                if tag.split("-")[1] == "GPE":
                     if last_word_was_location:
                         location[-1] += " " + word
                     else:
@@ -49,22 +39,20 @@ with open("outputs/events.csv", "r") as f:
                     last_word_was_location = True
                     print(f"Locations found in event {i}: {location}")
                 else:
-                    last_word_was_date = False
                     last_word_was_location = False
             else:
-                last_word_was_date = False
                 last_word_was_location = False
+
         csvwriter.writerow(
             {
                 "news_id": row["news_id"],
-                "article_title": row["article_title"],
-                "article_date": row["article_date"],
+                "news_title": row["news_title"],
                 "event": row["event"],
+                "event_type": row["event_type"],
+                "url": row["url"],
+                "date_prediction": row["date_prediction"],
                 "location_prediction": list(set(location))
                 if len(location) > 0
                 else None,
-                "date_prediction": date,
-                "event_type": row["event_type"],
-                "url": row["url"],
             }
         )
