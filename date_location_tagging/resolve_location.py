@@ -8,8 +8,7 @@ def resolve_location(in_file, out_file):
         csvfile,
         fieldnames=[
             "news_id",
-            "article_title",
-            "article_date",
+            "news_title",
             "event",
             "location_prediction",
             "village",
@@ -41,8 +40,7 @@ def resolve_location(in_file, out_file):
             csvwriter.writerow(
                 {
                     "news_id": row["news_id"],
-                    "article_title": row["article_title"],
-                    "article_date": row["article_date"],
+                    "news_title": row["news_title"],
                     "event": row["event"],
                     "location_prediction": loc,
                     "village": full_loc["village"],
