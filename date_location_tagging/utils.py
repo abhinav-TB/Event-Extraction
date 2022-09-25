@@ -10,7 +10,7 @@ def write_to_csv_with_memory(
     output_file_path: str,
     fieldnames: list[str] | None,
     process_row: Callable[
-        [int, dict[str | Any, str | Any]], dict[str | Any, str | Any]
+        [int, dict[str | Any, str | Any]], dict[str | Any, str | Any] | None
     ],
     after_effect: Callable[[], None] | None = None,
 ) -> None:
@@ -88,7 +88,9 @@ def write_to_csv_with_memory(
                         )
                         twriter.writerow(row)
                     else:
-                        twriter.writerow(process_row(i, row))
+                        modified_row = process_row(i, row)
+                        if modified_row:
+                            twriter.writerow(modified_row)
 
                 except KeyboardInterrupt:
                     skip = True

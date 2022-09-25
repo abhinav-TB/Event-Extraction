@@ -30,7 +30,7 @@ with CoreNLPClient(
         event = row["event"]
 
         if len(event) > MAX_LENGTH:
-            return row
+            return None
 
         try:
             ann_sentence = client.annotate(event)
