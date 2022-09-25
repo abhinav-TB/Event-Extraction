@@ -1,7 +1,7 @@
 from os import system
 from textwrap import dedent
 
-from write_to_csv_with_memory import write_to_csv_with_memory
+from utils import write_to_csv_with_memory
 
 comparison_file_path = "outputs/comparison.csv"
 

@@ -16,9 +16,8 @@ def write_to_csv_with_memory(
 ) -> None:
     """
     Write to a CSV file, while keeping a memory of the previous state of the file.
-    If the CSV file doesn't exist, it will be created with the same data as the input file but with missing fields set to None.
+    If the CSV file doesn't exist, it will be created with the same data as the input file but with missing fields set to the value TO_BE_FILLED.
     If input_file_path and fieldnames are None, it's assumed that the CSV file already exists.
-    From process_row, return the row argument unchanged to skip that row.
 
     :param input_file_path: Path to the input CSV file
     :param output_file_path: The path to the CSV file to write to.
@@ -52,7 +51,7 @@ def write_to_csv_with_memory(
                     if fieldname in row.keys():
                         new_row[fieldname] = row[fieldname]
                     else:
-                        new_row[fieldname] = None
+                        new_row[fieldname] = "TO_BE_FILLED"
 
                 csvwriter.writerow(new_row)
 
@@ -74,7 +73,22 @@ def write_to_csv_with_memory(
                     continue
 
                 try:
-                    twriter.writerow(process_row(i, row))
+                    is_done = True
+
+                    for fieldname in row.keys():
+                        if row[fieldname] == "TO_BE_FILLED":
+                            is_done = False
+                            break
+
+                    if is_done:
+                        print(
+                            f"Skipping row {i} because it's already done",
+                            end="\r",
+                            flush=True,
+                        )
+                        twriter.writerow(row)
+                    else:
+                        twriter.writerow(process_row(i, row))
 
                 except KeyboardInterrupt:
                     skip = True
