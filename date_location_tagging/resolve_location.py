@@ -59,6 +59,6 @@ def resolve_location(in_file, out_file):
 # )
 
 resolve_location(
-    in_file="outputs/tagged_events_raw_allen.csv",
-    out_file="outputs/tagged_events_location_resolved_allen.csv",
+    in_file="outputs/allen_heidal_time_loc_and_date_filled.csv",
+    out_file="outputs/allen_heidal_time_loc_and_date_filled_and_resolved.csv",
 )
