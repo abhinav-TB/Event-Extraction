@@ -20,7 +20,7 @@ csvwriter = DictWriter(
 csvwriter.writeheader()
 
 
-with open("outputs/tagged_events_location_resolved_allen.csv", "r") as f:
+with open("outputs/tagged_events_raw_allen.csv", "r") as f:
     reader = DictReader(f)
     prev_token_date = False
 
