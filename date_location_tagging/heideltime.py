@@ -3,9 +3,18 @@ from csv import DictWriter, DictReader
 
 csvfile = open("../outputs/heidal_Time.csv", "w")
 csvwriter = DictWriter(
-    csvfile, fieldnames=["news_id", "news_title", "date_prediction", "event","event_type","url"]
+    csvfile,
+    fieldnames=[
+        "news_id",
+        "news_title",
+        "date_prediction",
+        "event",
+        "event_type",
+        "url",
+    ],
 )
 csvwriter.writeheader()
+
 # read from a csvfile
 with open("../outputs/events.csv", "r") as f:
     reader = DictReader(f)
@@ -25,6 +34,6 @@ with open("../outputs/events.csv", "r") as f:
                 "event": row["event"],
                 "date_prediction": results[0],
                 "event_type": row["event_type"],
-                "url": row["url"]
+                "url": row["url"],
             }
         )
