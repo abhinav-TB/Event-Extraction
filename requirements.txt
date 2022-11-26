@@ -6,8 +6,8 @@ py_heideltime==2.0
 pymongo==4.1.1
 python-dotenv==0.21.0
 requests==2.28.0
-scikit_learn==1.1.3
-stanza==1.4.2
+scikit_learn==1.1.1
+stanza==1.4.0
 certifi==2022.6.15
 charset-normalizer==2.0.12
 dnspython==2.2.1
@@ -21,3 +21,5 @@ smart-open==6.0.0
 threadpoolctl==3.1.0
 urllib3==1.26.9
 recognizers-text-date-time==1.0.2a2
+pipreqs==0.4.11
+spacy==3.3.0
